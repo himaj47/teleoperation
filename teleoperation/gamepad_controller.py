@@ -7,7 +7,6 @@ class GamepadController(Node):
     def __init__(self):
         super().__init__('gamepad_controller')
 
-        # self.rotary_disc_pub_ = self.create_publisher(Int32, "/rotary_disc", 10)
         self.disc_position_pub_ = self.create_publisher(Int32, "/disc_position", 10)
         self.shoot_angle_pub_ = self.create_publisher(Int32, "/shoot_angle", 10)
         self.fly_wheels_speed_pub_ = self.create_publisher(Float32, "/fly_wheels_speed", 10)

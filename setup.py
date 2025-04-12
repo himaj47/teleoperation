@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 from glob import glob
 import os
 
-package_name = 'voyum_controller'
+package_name = 'teleoperation'
 
 setup(
     name=package_name,
@@ -23,7 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "gamepad_controller = voyum_controller.gamepad_controller:main"
+            "gamepad_controller = teleoperation.gamepad_controller:main"
         ],
     },
 )

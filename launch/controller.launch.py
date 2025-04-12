@@ -1,7 +1,6 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
     return LaunchDescription([
         Node(
@@ -11,7 +10,7 @@ def generate_launch_description():
             name='joy_node'
         ),
         Node(
-            package='voyum_controller',
+            package='teleoperation',
             namespace='',
             executable='gamepad_controller',
             name='gamepad_controller'
