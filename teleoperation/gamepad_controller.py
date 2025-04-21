@@ -7,14 +7,14 @@ class GamepadController(Node):
     def __init__(self):
         super().__init__('gamepad_controller')
 
-        self.disc_position_pub_ = self.create_publisher(Int32, "/disc_position", 10)
-        self.shoot_angle_pub_ = self.create_publisher(Int32, "/shoot_angle", 10)
-        self.fly_wheels_speed_pub_ = self.create_publisher(Float32, "/fly_wheels_speed", 10)
-        self.pneumatics_state_pub_ = self.create_publisher(Bool, "/pneumatics", 10)
+        self.disc_position_pub_ = self.create_publisher(Int32, "/twist", 10)
+        self.shoot_angle_pub_ = self.create_publisher(Int32, "/angle", 10)
+        self.fly_wheels_speed_pub_ = self.create_publisher(Float32, "/flyWheel", 10)
+        self.pneumatics_state_pub_ = self.create_publisher(Bool, "/finger", 10)
         # self.create_subscription(Int32, "/disc_encoder", self.disc_enocder_callback, 10)
         self.create_subscription(Joy, "/joy", self.joy_callback, 10)
 
-        self.disc_position_max_ = 500
+        self.disc_position_max_ = 200
         # self.disc_encoder_min_ = 500
         self.shoot_angle_position_max_ = 500
         # self.shoot_angle_encoder_min_ = 500
@@ -40,10 +40,6 @@ class GamepadController(Node):
             angle_adjustment_msg = Int32()
             vel_msg = Float32()
 
-            if rightHatX > 0.0:
-                angle_adjustment_msg.data = set_disc_position
-                self.disc_position_pub_.publish(angle_adjustment_msg)
-
             if leftHatY > 0.0:
                 angle_adjustment_msg.data = set_shoot_angle
                 self.shoot_angle_pub_.publish(angle_adjustment_msg)
@@ -63,8 +59,11 @@ class GamepadController(Node):
             elif not enable_pneumatic:
                 self.pressed_ = True
 
-            vel_msg.data = self.flywheel_curr_speed_
+            vel_msg.data = min(max(self.flywheel_curr_speed_, 0.0), 1.0)
             self.fly_wheels_speed_pub_.publish(vel_msg)
+
+            angle_adjustment_msg.data = set_disc_position
+            self.disc_position_pub_.publish(angle_adjustment_msg)
             
 
 def main(args=None):
